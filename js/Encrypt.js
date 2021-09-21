@@ -65,7 +65,7 @@ const ipVector = {
     64: 7,
 }
 
-const _ccMax = 999999;
+const _ccMax = 1000000;
 const _ccMask = '00000000000000000000';
 function encrypt_credit_card(ccn) {
     const creditCardNumber = ccn.toString();
@@ -97,7 +97,7 @@ function encrypt_credit_card(ccn) {
     do {
         encryptedData = fpe_encrypt(tweakedDataInBits, true);
         encryptedNumber = convert(encryptedData, 2, 10, '000000');
-    } while (encryptedNumber > _ccMax);
+    } while (encryptedNumber >= _ccMax);
 
     return pre + '' + encryptedNumber + post;
 }
@@ -145,7 +145,7 @@ function fpe_encrypt(bits, isEncryption) {
     let left = bitArray.slice(0, 10);
     let right = bitArray.slice(10);
     for (const key of keySequence) {
-        console.log(left.join(''),right.join(''), left.join('') == right.join(''));
+        console.log(left.join(''), right.join(''), left.join('') == right.join(''));
         const fOutput = special_creditcard_psuedorandomgenrator([...right], _subKeys[key]);
         const right2 = bitwise_xor(fOutput, left);
         left = [...right];
