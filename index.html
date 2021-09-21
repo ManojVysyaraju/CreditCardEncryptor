@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Encryptor</title>
+    <script src="js/Key.js"></script>
+    <script src="js/prfCreditCard.js"></script>
+    <script src="js/SBoxGenerator.js"></script>
+    <script src="js/Encrypt.js"></script>
+    <script src="js/index.js"></script>
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td>Credit Card Number</td>
+            <td>Action</td>
+            <td>Output</td>
+        </tr>
+        <tr>
+            <td><input id="ccn" autocomplete="cc-number" maxlength="16" minlength="16"></td>
+            <td><button onclick="enc()">Encrypt</button></td>
+            <td><label for="" id="occn"></label></td>
+        </tr>
+        <tr>
+            <td><input id="eccn" autocomplete="cc-number" maxlength="16" minlength="16"></td>
+            <td><button onclick="dec()">Decrypt</button></td>
+            <td><label for="" id="oeccn"></label></td>
+        </tr>
+    </table>
+</body>
+
+</html>
