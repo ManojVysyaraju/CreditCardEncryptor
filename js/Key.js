@@ -19,7 +19,12 @@ const _subKeys = {
 };
 const _keyHex64 = '73357638792F423F';
 function GenerateMainKeyBits() {
-    _keyBit64 = Array.from(_keyHex64).map(x=>convert(x,16,2,'0000')).join('');
+    _keyBit64 = Array.from(_keyHex64).map(x => convert(x, 16, 2, '0000')).join('');
+    const setkey = () => {
+        const keyEle = document.getElementById('key');
+        keyEle.textContent = `Key:${_keyBit64}`;
+    }
+    setTimeout(setkey, 2000);
 }
 function convert(data, from, to, mask = '') {
     return (mask + parseInt(data, from).toString(to)).substr(-mask.length);
