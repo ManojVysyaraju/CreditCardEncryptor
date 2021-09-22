@@ -112,7 +112,7 @@ function encrypt_credit_card(ccn) {
         }
     } while (encryptedNumber >= _ccMax);
 
-    return pre + '' + encryptedNumber + post;
+    return pre + '' + convert(encryptedNumber,10,10,'000000') + post;
 }
 function decrypt_credit_card(ccn) {
     _log.length = 0;
@@ -156,7 +156,7 @@ function decrypt_credit_card(ccn) {
     const tweakInNumber = Number(tweak);
     const unTweakedData = (decryptedNumber - tweakInNumber + _ccMax) % _ccMax;
     _log.push(`un-tweaked Number: ${spanit(unTweakedData)}`);
-    return pre + '' + ('000000' + unTweakedData).substr(-6) + post;
+    return pre + '' + convert(unTweakedData,10,10,'000000') + post;
 }
 
 function fpe_encrypt(bits, isEncryption, logging=true) {
