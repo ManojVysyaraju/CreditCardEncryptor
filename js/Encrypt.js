@@ -168,12 +168,13 @@ function fpe_encrypt(bits, isEncryption, logging=true) {
     let left = bitArray.slice(0, 10);
     let right = bitArray.slice(10);
     let i = 1;
+    logging && _log.push(`round:${spanit(convert(0, 10, 10, '00'))} leftblock:${spanit(left.join(''))} rightblock:${spanit(right.join(''))}`);
     for (const key of keySequence) {
-        logging && _log.push(`round:${spanit(convert(i, 10, 10, '00'))} key:${spanit(_subKeys[key].join(''))} leftblock:${spanit(left.join(''))} rightblock:${spanit(right.join(''))}`);
         const fOutput = special_creditcard_psuedorandomgenrator([...right], _subKeys[key]);
         const right2 = bitwise_xor(fOutput, left);
         left = [...right];
         right = [...right2];
+        logging && _log.push(`round:${spanit(convert(i, 10, 10, '00'))} key:${spanit(_subKeys[key].join(''))} leftblock:${spanit(left.join(''))} rightblock:${spanit(right.join(''))}`);
         i++;
     }
     const output = [...right, ...left];
