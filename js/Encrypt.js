@@ -199,6 +199,7 @@ function fractionOfMatchedBits(a, b) {
 const allEncryptions = [];
 function getAllEncryptions() {
     allEncryptions.length = 0;
+    const start = new Date();
     for (let i = 0; i < _ccMax; i++) {
         let input = i;
         const enc_i = convert(i, 10, 2, _ccMask);
@@ -222,4 +223,6 @@ function getAllEncryptions() {
             fractionAB: fractionOfMatchedBits(enc_i, enc_output)
         });
     }
+    const end = new Date();
+    console.log(start, end, (end.getTime() - start.getTime()) / 1000);
 }

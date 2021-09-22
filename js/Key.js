@@ -17,7 +17,7 @@ const _subKeys = {
     15: [],
     16: []
 };
-const _keyHex64 = '73357638792F423F';
+const _keyHex64 = '66546A576E5A7234';
 function GenerateMainKeyBits() {
     _keyBit64 = Array.from(_keyHex64).map(x => convert(x, 16, 2, '0000')).join('');
     const setkey = () => {
