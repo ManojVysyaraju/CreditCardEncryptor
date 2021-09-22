@@ -64,10 +64,11 @@ const ipVector = {
     63: 15,
     64: 7,
 }
-
+const _log = [];
 const _ccMax = 1000000;
 const _ccMask = '00000000000000000000';
 function encrypt_credit_card(ccn) {
+    _log.length = 0;
     const creditCardNumber = ccn.toString();
     const ccArray = creditCardNumber.split('');
     let data = '';
@@ -90,18 +91,31 @@ function encrypt_credit_card(ccn) {
     }
     const dataInNumber = Number(data);
     const tweakInNumber = Number(tweak);
-    const tweakedData = (dataInNumber + tweakInNumber) % _ccMax;
-    const tweakedDataInBits = convert(tweakedData, 10, 2, _ccMask);;
+    _log.push(`predata: ${spanit(pre)} data:${spanit(data)} postdata:${spanit(post)}`);
+    _log.push(`Number to be encrypted: ${spanit(data)}`);
+    _log.push(`Tweak: ${spanit(tweak)}`);
+    let tweakedData = (dataInNumber + tweakInNumber) % _ccMax;
+    _log.push(`Tweaked Number: ${spanit(tweakedData)}`);
     let encryptedData = '';
     let encryptedNumber;
     do {
+        let tweakedDataInBits = convert(tweakedData, 10, 2, _ccMask);
+        _log.push(`Tweaked Data in Bits: ${spanit(tweakedDataInBits)}`);
         encryptedData = fpe_encrypt(tweakedDataInBits, true);
-        encryptedNumber = convert(encryptedData, 2, 10, '000000');
+        _log.push(`fraction of 1's in encrypted data: ${spanit(fractionOfOneBits(encryptedData.split('')))}`);
+        _log.push(`fraction of bits in encrypted data matched with input data: ${spanit(fractionOfMatchedBits(tweakedDataInBits, encryptedData))}`)
+        encryptedNumber = convert(encryptedData, 2, 10);
+        _log.push(`encrypted number: ${spanit(encryptedNumber)}`);
+        if (encryptedNumber >= _ccMax) {
+            _log.push(`as encrypted number is more than 6 digits, we encrypt again`);
+            tweakedData = encryptedNumber;
+        }
     } while (encryptedNumber >= _ccMax);
 
     return pre + '' + encryptedNumber + post;
 }
 function decrypt_credit_card(ccn) {
+    _log.length = 0;
     const creditCardNumber = ccn.toString();
     const ccArray = creditCardNumber.split('');
     let data = '';
@@ -122,21 +136,30 @@ function decrypt_credit_card(ccn) {
             post += ccArray[index]
         }
     }
-    const dataInNumber = Number(data);
-    const dataInBits = convert(dataInNumber, 10, 2, _ccMask);
-    let encryptedData = '';
-    let encryptedNumber;
+    _log.push(`predata: ${spanit(pre)} data:${spanit(data)} postdata:${spanit(post)}`);
+    _log.push(`Number to be decrypted: ${spanit(data)}`);
+    _log.push(`Tweak: ${spanit(tweak)}`);
+    let dataInNumber = Number(data);
+    let decryptedData = '';
+    let decryptedNumber;
     do {
-        encryptedData = fpe_encrypt(dataInBits, false);
-        encryptedNumber = convert(encryptedData, 2, 10, '000000');
-    } while (encryptedNumber > _ccMax);
+        let dataInBits = convert(dataInNumber, 10, 2, _ccMask);
+        _log.push(`Data in Bits: ${spanit(dataInBits)}`);
+        decryptedData = fpe_encrypt(dataInBits, false);
+        decryptedNumber = convert(decryptedData, 2, 10);
+        _log.push(`decrypted number: ${spanit(decryptedNumber)}`);
+        if (decryptedNumber >= _ccMax) {
+            _log.push(`as decrypted number is more than 6 digits, we decrypt again`);
+            dataInNumber = decryptedNumber;
+        }
+    } while (decryptedNumber >= _ccMax);
     const tweakInNumber = Number(tweak);
-    const tweakedData = (encryptedNumber - tweakInNumber + _ccMax) % _ccMax;
-
-    return pre + '' + ('000000' + tweakedData).substr(-6) + post;
+    const unTweakedData = (decryptedNumber - tweakInNumber + _ccMax) % _ccMax;
+    _log.push(`un-tweaked Number: ${spanit(unTweakedData)}`);
+    return pre + '' + ('000000' + unTweakedData).substr(-6) + post;
 }
 
-function fpe_encrypt(bits, isEncryption) {
+function fpe_encrypt(bits, isEncryption, logging=true) {
     const keySequence = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
     if (!isEncryption) {
         keySequence.reverse();
@@ -144,13 +167,58 @@ function fpe_encrypt(bits, isEncryption) {
     const bitArray = bits.split('');
     let left = bitArray.slice(0, 10);
     let right = bitArray.slice(10);
+    let i = 1;
     for (const key of keySequence) {
-        console.log(left.join(''), right.join(''), left.join('') == right.join(''));
+        logging && _log.push(`round:${spanit(convert(i, 10, 10, '00'))} key:${spanit(_subKeys[key].join(''))} leftblock:${spanit(left.join(''))} rightblock:${spanit(right.join(''))}`);
         const fOutput = special_creditcard_psuedorandomgenrator([...right], _subKeys[key]);
         const right2 = bitwise_xor(fOutput, left);
         left = [...right];
         right = [...right2];
+        i++;
     }
-
-    return [...right, ...left].join('');
+    const output = [...right, ...left];
+    logging && _log.push(`final round: ${spanit(output.join(''))}`);
+    return output.join('');
+}
+function spanit(value) {
+    return `<span class='log-value'>${value}</span>`;
+}
+function fractionOfOneBits(data) {
+    return data.filter(x => x == 1).length / data.length;
+}
+function fractionOfMatchedBits(a, b) {
+    let matched = 0;
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] == b[i]) {
+            matched++;
+        }
+    }
+    return matched / a.length;
+}
+const allEncryptions = [];
+function getAllEncryptions() {
+    allEncryptions.length = 0;
+    for (let i = 0; i < _ccMax; i++) {
+        let input = i;
+        const enc_i = convert(i, 10, 2, _ccMask);
+        let o = _ccMax;
+        let enc_output = '';
+        let iteration = 0;
+        while (o >= _ccMax) {
+            let enc_input = convert(input, 10, 2, _ccMask);
+            enc_output = fpe_encrypt(enc_input, true, false);
+            o = convert(enc_output, 2, 10);
+            input = o;
+            iteration++;
+        }
+        allEncryptions.push({
+            input: i,
+            inputbits: enc_i,
+            outputbits: enc_output,
+            outputnumber: o,
+            iterations: iteration,
+            fraction1: fractionOfOneBits(enc_output.split('')),
+            fractionAB: fractionOfMatchedBits(enc_i, enc_output)
+        });
+    }
 }

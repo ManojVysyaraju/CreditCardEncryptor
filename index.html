@@ -11,26 +11,77 @@
     <script src="js/SBoxGenerator.js"></script>
     <script src="js/Encrypt.js"></script>
     <script src="js/index.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
-    <table>
-        <tr>
-            <td>Credit Card Number</td>
-            <td>Action</td>
-            <td>Output</td>
-        </tr>
-        <tr>
-            <td><input id="ccn" autocomplete="cc-number" maxlength="16" minlength="16"></td>
-            <td><button onclick="enc()">Encrypt</button></td>
-            <td><label for="" id="occn"></label></td>
-        </tr>
-        <tr>
-            <td><input id="eccn" autocomplete="cc-number" maxlength="16" minlength="16"></td>
-            <td><button onclick="dec()">Decrypt</button></td>
-            <td><label for="" id="oeccn"></label></td>
-        </tr>
-    </table>
+    <div style="width: 100%;height: 600px;">
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 50%;">Encryption</td>
+                <td>Decryption</td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width: 33%;">Credit Card Number</td>
+                            <td style="width: 33%;">Action</td>
+                            <td>Encrypted Card Number</td>
+                        </tr>
+                        <tr>
+                            <td><input id="ccn" autocomplete="cc-number" maxlength="16" minlength="16"></td>
+                            <td><button onclick="enc()">Encrypt</button></td>
+                            <td><label class="output" id="occn"></label></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                Encryption Log:
+                                <br />
+                                <div style="margin-top: 10px;"><label style="word-spacing: 5px;" id='elog'></label></div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="vertical-align: top;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="width: 33%;">Encrypted Credit Card Number</td>
+                            <td style="width: 33%;">Action</td>
+                            <td>Decrypted Card Number</td>
+                        </tr>
+                        <tr>
+                            <td><input id="eccn" autocomplete="cc-number" maxlength="16" minlength="16"></td>
+                            <td><button onclick="dec()">Decrypt</button></td>
+                            <td><label class="output" id="oeccn"></label></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                Decryption Log:
+                                <br />
+                                <div style="margin-top: 10px;"><label style="word-spacing: 5px;" id='dlog'></label></div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="card container">
+        <a href="https://wa.me/+919963530635?text=hi" target="_blank"><img
+                src="https://courses.iitm.ac.in/pluginfile.php/78631/user/icon/classic/f1?rev=29568"
+                alt="Manoj Vysyaraju"></a>
+        <div class="">
+            <a href="https://www.linkedin.com/in/vysyarajusaimanoj/" target="_blank"><i class="fa fa-linkedin-square"
+                    style="font-size:36px"></i></a>
+            <a href="https://wa.me/+919963530635?text=hi" target="_blank"><i class="fa fa-whatsapp"
+                    style="font-size:36px"></i></a>
+            <a href="mailto:vysyarajusaimanoj@gmail.com" target="_blank"><i class="fa fa-envelope"
+                    style="font-size:36px"></i></a>
+            <h4 style="margin-top: 10px;"><b>Manoj Vysyaraju</b></h4>
+        </div>
+    </div>
 </body>
 
 </html>
