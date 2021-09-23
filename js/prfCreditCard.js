@@ -72,13 +72,6 @@ function expand(block) {
     }
     return expandedBlock;
 }
-function bitwise_xor(A, B) {
-    const C = [];
-    for (let index = 0; index < A.length; index++) {
-        C.push(A[index] != B[index] ? 1 : 0);
-    }
-    return C;
-}
 function contract(data) {
     const output = [];
     while (output.length != 10) {
@@ -105,13 +98,4 @@ function unbox(chunks) {
         data.push(...boxmapping)
     }
     return data;
-}
-function getChunks(data, chunkSize) {
-    const chunks = {};
-    let chunk = 1;
-    for (let i = 0; i < data.length; i += chunkSize) {
-        chunks[chunk] = data.slice(i, i + chunkSize);
-        chunk++
-    }
-    return chunks;
 }

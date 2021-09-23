@@ -26,9 +26,7 @@ function GenerateMainKeyBits() {
     }
     setTimeout(setkey, 2000);
 }
-function convert(data, from, to, mask = '') {
-    return (mask + parseInt(data, from).toString(to)).substr(-mask.length);
-}
+
 const pc1Left = {
     1: 57,
     2: 49,
@@ -189,11 +187,5 @@ function GenerateSubKeys() {
     }
 
 }
-
-function leftShiftArray(arr, shift) {
-    shift = shift || 0;
-    return [...arr.slice(shift), ...arr.slice(0, shift)]
-}
-
 GenerateMainKeyBits();
 GenerateSubKeys();
