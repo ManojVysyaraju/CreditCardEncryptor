@@ -1,3 +1,6 @@
+/**
+ * @author Manoj Vysyaraju<vysyarajusaimanoj@outlook.com>
+ */
 const expansionDict = {
     1: 32,
     2: 1,

@@ -1,3 +1,6 @@
+/**
+ * @author Manoj Vysyaraju<vysyarajusaimanoj@outlook.com>
+ */
 function convert(data, from, to, mask = '') {
     return (mask + parseInt(data, from).toString(to)).substr(-mask.length);
 }

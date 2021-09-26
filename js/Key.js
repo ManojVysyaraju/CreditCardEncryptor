@@ -1,3 +1,6 @@
+/**
+ * @author Manoj Vysyaraju<vysyarajusaimanoj@outlook.com>
+ */
 let _keyBit64 = '';
 const _subKeys = {
     1: [],

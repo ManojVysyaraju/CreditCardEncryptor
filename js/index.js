@@ -1,3 +1,6 @@
+/**
+ * @author Manoj Vysyaraju<vysyarajusaimanoj@outlook.com>
+ */
 function enc() {
     const inputEle = document.getElementById('ccn');
     const value = inputEle.value;

@@ -1,4 +1,6 @@
-
+/**
+ * @author Manoj Vysyaraju<vysyarajusaimanoj@outlook.com>
+ */
 const _log = [];
 const _ccMax = 1000000;
 const _ccMask = '00000000000000000000';
