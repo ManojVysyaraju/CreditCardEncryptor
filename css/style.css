@@ -25,11 +25,12 @@ img {
 .output {
   font-weight: bolder;
   letter-spacing: 2px;
+  border: 1px solid;
+  padding: 3px;
 }
 
 .log-value {
   letter-spacing: 2px;
-  text-decoration-line: underline;
 }
 
 .br {

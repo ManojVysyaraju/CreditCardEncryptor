@@ -7,7 +7,7 @@ function enc() {
     const msg = validate(value);
     if (!msg) {
         outputEle.textContent = output;
-        logEle.innerHTML = _log.join('<span class="br"></span>');
+        delayLog(logEle, _log);
     } else {
         outputEle.textContent = '';
         logEle.textContent = msg;
@@ -22,7 +22,7 @@ function dec() {
     const msg = validate(value);
     if (!msg) {
         outputEle.textContent = output;
-        logEle.innerHTML = _log.join('<span class="br"></span>');
+        delayLog(logEle, _log);
     } else {
         outputEle.textContent = '';
         logEle.textContent = msg;
@@ -40,3 +40,45 @@ function validate(val) {
     }
     return '';
 }
+function delayLog(ele, log) {
+    Array.from(document.getElementsByTagName('button')).map(x => x.disabled = true);
+    const l = [...log];
+    l.reverse();
+    ele.innerHTML = '';
+    printLog(ele, l);
+}
+function printLog(ele, log) {
+    const msg = log.pop();
+    if (msg) {
+        setTimeout(() => {
+            ele.innerHTML += evalMsg(msg) + '<span class="br"></span>';
+            const pres = Array.from(document.getElementsByTagName('pre'));
+            pres.reverse();
+            pres[0] && pres[0].scrollIntoView();
+            printLog(ele, log);
+        }, 100);
+    }
+    else {
+        const buttons = Array.from(document.getElementsByTagName('button'));
+        buttons.map(x => x.disabled = false);
+        document.getElementById('key').scrollIntoView();
+    }
+}
+function evalMsg(x) {
+    if (typeof (x) == typeof ('')) {
+        return x;
+    } else {
+        return _roundMask.replace('#left', x.leftblock)
+            .replace('#round', x.round)
+            .replace('#right', x.rightblock)
+            .replace('#key', x.key ? 'key: ' + x.key : '');
+    }
+}
+const _roundMask = `
+<pre>
+-----------------------------ROUND #round-----------------------------
+#key
+left: #left   right:#right
+-------------------------------------------------------------------
+</pre>
+`;

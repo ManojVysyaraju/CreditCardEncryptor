@@ -26,7 +26,7 @@ function encrypt_credit_card(ccn) {
     }
     const dataInNumber = Number(data);
     const tweakInNumber = Number(tweak);
-    _log.push(`predata: ${spanit(pre)} data:${spanit(data)} postdata:${spanit(post)}`);
+    _log.push(`Issuer Identification Number: ${spanit(pre)}</br>Data to be encrypted:${spanit(data)}</br>Transaction Identification Number:${spanit(post)}`);
     _log.push(`Number to be encrypted: ${spanit(data)}`);
     _log.push(`Tweak: ${spanit(tweak)}`);
     let tweakedData = (dataInNumber + tweakInNumber) % _ccMax;
@@ -71,7 +71,7 @@ function decrypt_credit_card(ccn) {
             post += ccArray[index]
         }
     }
-    _log.push(`predata: ${spanit(pre)} data:${spanit(data)} postdata:${spanit(post)}`);
+    _log.push(`Issuer Identification Number: ${spanit(pre)}</br>Data to be encrypted: ${spanit(data)}</br>Transaction Identification Number:${spanit(post)}`);
     _log.push(`Number to be decrypted: ${spanit(data)}`);
     _log.push(`Tweak: ${spanit(tweak)}`);
     let dataInNumber = Number(data);
@@ -95,6 +95,7 @@ function decrypt_credit_card(ccn) {
 }
 
 function fpe_encrypt(bits, isEncryption, logging = true) {
+    const round_logs = [];
     const keySequence = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
     if (!isEncryption) {
         keySequence.reverse();
@@ -103,16 +104,17 @@ function fpe_encrypt(bits, isEncryption, logging = true) {
     let left = bitArray.slice(0, 10);
     let right = bitArray.slice(10);
     let i = 1;
-    logging && _log.push(`round:${spanit(convert(0, 10, 10, '00'))} leftblock:${spanit(left.join(''))} rightblock:${spanit(right.join(''))}`);
+    logging && round_logs.push({ round: spanit(convert(0, 10, 10, '00')), leftblock: spanit(left.join('')), rightblock: spanit(right.join('')) });
     for (const key of keySequence) {
         const fOutput = special_creditcard_psuedorandomgenrator([...right], _subKeys[key]);
         const right2 = bitwise_xor(fOutput, left);
         left = [...right];
         right = [...right2];
-        logging && _log.push(`round:${spanit(convert(i, 10, 10, '00'))} key:${spanit(_subKeys[key].join(''))} leftblock:${spanit(left.join(''))} rightblock:${spanit(right.join(''))}`);
+        logging && round_logs.push({ round: spanit(convert(i, 10, 10, '00')), key: spanit(_subKeys[key].join('')), leftblock: spanit(left.join('')), rightblock: spanit(right.join('')) });
         i++;
     }
     const output = [...right, ...left];
-    logging && _log.push(`final round: ${spanit(output.join(''))}`);
+    _log.push(...round_logs);
+    logging && _log.push(`final ${isEncryption?'encrypted data':'decrypted data'}: ${spanit(output.join(''))}`);
     return output.join('');
 }
