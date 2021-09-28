@@ -1,6 +1,7 @@
 /**
  * @author Manoj Vysyaraju<vysyarajusaimanoj@outlook.com>
  */
+// dictionary or the look up used in expanision function
 const expansionDict = {
     1: 32,
     2: 1,
@@ -51,10 +52,13 @@ const expansionDict = {
     47: 32,
     48: 1
 }
-function special_creditcard_psuedorandomgenrator(blk, k) {
-    const key = [...k];
-    const block = [...blk];
 
+// function used in fiestal 16 layer encryption
+function special_creditcard_psuedorandomgenrator(blk, k, logObj) {
+    const key = [...k]; // cloning the sub key array to avoid changing the main reference
+    const block = [...blk]; // cloning the right block array to avoid changing the reference
+
+    // in our case bit length is only 10, padding 0 bits to the right block untill the lenght is 32 bits
     if (block.length < 32) {
         block.reverse();
         while (block.length - 32) {
@@ -62,12 +66,20 @@ function special_creditcard_psuedorandomgenrator(blk, k) {
         }
         block.reverse();
     }
+
+    // expanding the 32 bit block to 48 bits
     const eBlock = expand(block);
+
+    // preforming the xor b/w sub key and expanded block
     const xoredData = bitwise_xor(eBlock, key);
+
+    // contacting the 48 bit xored block to 10 bits as our original block size is 10 bits
     const output = contract(xoredData);
 
     return output;
 }
+
+// expansion function to expand 32 bit array to 48 bit array based on expansion look up
 function expand(block) {
     const expandedBlock = [];
     for (const k in expansionDict) {
@@ -75,6 +87,8 @@ function expand(block) {
     }
     return expandedBlock;
 }
+
+// function to contract 48 bit array to 10 bits
 function contract(data) {
     const output = [];
     while (output.length != 10) {
@@ -92,6 +106,8 @@ function contract(data) {
     output.reverse();
     return output;
 }
+
+// function using sboxes to contract data by chunking into 6 bit blocks and outputting related 4 bits
 function unbox(chunks) {
     const data = [];
     for (const box in chunks) {

@@ -1,6 +1,8 @@
 /**
  * @author Manoj Vysyaraju<vysyarajusaimanoj@outlook.com>
  */
+/// functions to hanlde HTML to show in the UI
+
 function enc() {
     const inputEle = document.getElementById('ccn');
     const value = inputEle.value;
@@ -59,7 +61,7 @@ function printLog(ele, log) {
             pres.reverse();
             pres[0] && pres[0].scrollIntoView();
             printLog(ele, log);
-        }, 100);
+        }, 30);
     }
     else {
         const buttons = Array.from(document.getElementsByTagName('button'));
@@ -74,14 +76,14 @@ function evalMsg(x) {
         return _roundMask.replace('#left', x.leftblock)
             .replace('#round', x.round)
             .replace('#right', x.rightblock)
-            .replace('#key', x.key ? 'key: ' + x.key : '');
+            .replace('#key', x.key ? 'sub key: ' + x.key : '');
     }
 }
 const _roundMask = `
 <pre>
------------------------------ROUND #round-----------------------------
+-----------------------------ROUND #round----------------------------------
 #key
-left: #left   right:#right
--------------------------------------------------------------------
+left: #left   right: #right
+------------------------------------------------------------------------
 </pre>
 `;

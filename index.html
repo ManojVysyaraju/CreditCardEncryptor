@@ -18,16 +18,20 @@
 
 <body>
     <div style="width: 100%; height: 600px">
+        <span id="key" class="log-value"></span>
+        <script>
+            const keyEle = document.getElementById('key');
+            keyEle.textContent = `Key:${_keyBit64}`;
+        </script>
         <table style="width: 100%">
             <tr>
-                <td style="width: 50%">
-                    Encryption <span id="key" class="log-value"></span>
-                </td>
-                <td>Decryption</td>
-            </tr>
-            <tr>
-                <td style="vertical-align: top">
+                <td style="vertical-align: top;border-right: 1px solid black;min-height: 1600px;width: 50%;">
                     <table style="width: 100%">
+                        <tr>
+                            <td colspan="3">
+                                Encryption 
+                            </td>
+                        </tr>
                         <tr>
                             <td style="width: 33%">Credit Card Number</td>
                             <td style="width: 33%">Action</td>
@@ -54,6 +58,11 @@
                 </td>
                 <td style="vertical-align: top">
                     <table style="width: 100%">
+                        <tr>
+                            <td colspan="3">
+                                Decryption 
+                            </td>
+                        </tr>
                         <tr>
                             <td style="width: 33%">Encrypted Credit Card Number</td>
                             <td style="width: 33%">Action</td>

@@ -1,15 +1,23 @@
 /**
  * @author Manoj Vysyaraju<vysyarajusaimanoj@outlook.com>
  */
+
+// function convert number from one base to other base and padd output based on the provided mask
 function convert(data, from, to, mask = '') {
     return (mask + parseInt(data, from).toString(to)).substr(-mask.length);
 }
+
+//function to create a span tag out the value
 function spanit(value) {
     return `<span class='log-value'>${value}</span>`;
 }
+
+// function to output fraction of 1's present in the data
 function fractionOfOneBits(data) {
     return data.filter(x => x == 1).length / data.length;
 }
+
+// function to determine the fraction of matched bits between two binary arrays
 function fractionOfMatchedBits(a, b) {
     let matched = 0;
     for (let i = 0; i < a.length; i++) {
@@ -19,6 +27,8 @@ function fractionOfMatchedBits(a, b) {
     }
     return matched / a.length;
 }
+
+// function perform bitwise xor operation between two binary arrays
 function bitwise_xor(A, B) {
     const C = [];
     for (let index = 0; index < A.length; index++) {
@@ -26,6 +36,8 @@ function bitwise_xor(A, B) {
     }
     return C;
 }
+
+// functon to group chunks from data based on chunksize
 function getChunks(data, chunkSize) {
     const chunks = {};
     let chunk = 1;
@@ -35,10 +47,14 @@ function getChunks(data, chunkSize) {
     }
     return chunks;
 }
+
+// function to left shit array based on shift value.
 function leftShiftArray(arr, shift) {
     shift = shift || 0;
     return [...arr.slice(shift), ...arr.slice(0, shift)]
 }
+
+// test function to create lookup for all the possible credit cards.
 const allEncryptions = [];
 function getAllEncryptions() {
     allEncryptions.length = 0;
