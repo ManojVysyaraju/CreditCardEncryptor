@@ -33,6 +33,14 @@ img {
   letter-spacing: 2px;
 }
 
+pre>span.log-value {
+  color: blue;
+}
+
+label>span.log-value {
+  color: blue;
+}
+
 .br {
   display: block;
   margin-bottom: 3px;
