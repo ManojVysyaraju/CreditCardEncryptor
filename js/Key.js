@@ -163,16 +163,16 @@ function GenerateSubKeys() {
         leftArray: [],
         rightArray: []
     }
-    const binKey56Array = _keyBit64.split('');
+    const binKey64Array = _keyBit64.split('');
     // create PC -1 left
     for (const key in pc1Left) {
         const position = pc1Left[key] - 1;
-        pc1.leftArray.push(binKey56Array[position]);
+        pc1.leftArray.push(binKey64Array[position]);
     }
     // create PC -1 Right
     for (const key in pc1Right) {
         const position = pc1Right[key] - 1;
-        pc1.rightArray.push(binKey56Array[position]);
+        pc1.rightArray.push(binKey64Array[position]);
     }
 
     for (const round in BitRotationDetails) {
