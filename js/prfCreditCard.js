@@ -57,8 +57,8 @@ const expansionDict = {
 function special_creditcard_psuedorandomgenrator(blk, k, logObj) {
     const key = [...k]; // cloning the sub key array to avoid changing the main reference
     const block = [...blk]; // cloning the right block array to avoid changing the reference
-
-    // in our case bit length is only 10, padding 0 bits to the right block untill the lenght is 32 bits
+    const len = block.length;
+    // in our case bit length is only len, padding 0 bits to the right block untill the lenght is 32 bits
     if (block.length < 32) {
         block.reverse();
         while (block.length - 32) {
@@ -73,8 +73,8 @@ function special_creditcard_psuedorandomgenrator(blk, k, logObj) {
     // preforming the xor b/w sub key and expanded block
     const xoredData = bitwise_xor(eBlock, key);
 
-    // contacting the 48 bit xored block to 10 bits as our original block size is 10 bits
-    const output = contract(xoredData);
+    // contacting the 48 bit xored block to len bits as our original block size is len bits
+    const output = contract(xoredData, len);
 
     return output;
 }
@@ -88,13 +88,13 @@ function expand(block) {
     return expandedBlock;
 }
 
-// function to contract 48 bit array to 10 bits
-function contract(data) {
+// function to contract 48 bit array to len bits
+function contract(data, len) {
     const output = [];
-    while (output.length != 10) {
+    while (output.length != len) {
         const chunks = getChunks(data, 6);
         data = unbox(chunks);
-        if (data.length + output.length == 10) {
+        if (data.length + output.length == len) {
             while (data.length) {
                 output.push(data.pop());
             }
