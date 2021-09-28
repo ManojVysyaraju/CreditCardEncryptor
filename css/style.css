@@ -27,6 +27,7 @@ img {
   letter-spacing: 2px;
   border: 1px solid;
   padding: 3px;
+  color: green;
 }
 
 .log-value {
