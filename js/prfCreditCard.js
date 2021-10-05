@@ -83,7 +83,7 @@ function special_creditcard_psuedorandomgenrator(blk, k, logObj) {
 function expand(block) {
     const expandedBlock = [];
     for (const k in expansionDict) {
-        expandedBlock.push(block[expansionDict[k]]);
+        expandedBlock.push(block[expansionDict[k] - 1]);
     }
     return expandedBlock;
 }
